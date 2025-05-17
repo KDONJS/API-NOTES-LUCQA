@@ -7,6 +7,9 @@ const noteRoutes = require('./routes/noteRoutes');
 const figlet = require('figlet');
 const Table = require('cli-table3');
 const colors = require('colors');
+const logger = require('./utils/logger');
+const httpLogger = require('./middlewares/logs/httpLogger');
+const errorLogger = require('./middlewares/logs/errorLogger');
 
 // Cargar variables de entorno
 dotenv.config();
@@ -17,6 +20,7 @@ const VERSION = '1.0.0';
 const TECH = 'Node.js + Express';
 const DB = 'MongoDB';
 const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Mostrar banner
 console.log(
@@ -40,7 +44,8 @@ table.push(
   ['Versión'.cyan, VERSION],
   ['Tecnología'.cyan, TECH],
   ['Base de Datos'.cyan, DB],
-  ['Puerto'.cyan, PORT.toString()]
+  ['Puerto'.cyan, PORT.toString()],
+  ['Entorno'.cyan, NODE_ENV]
 );
 
 console.log(table.toString());
@@ -52,6 +57,9 @@ const app = express();
 
 // Middleware de seguridad
 app.use(helmet());
+
+// Middleware de logs HTTP
+app.use(httpLogger);
 
 // Middleware
 app.use(cors());
@@ -66,7 +74,33 @@ app.get('/', (req, res) => {
   res.send('API de Notas está funcionando');
 });
 
+// Middleware para manejo de errores
+app.use(errorLogger);
+
+// Middleware para rutas no encontradas
+app.use((req, res) => {
+  logger.warn(`Ruta no encontrada: ${req.originalUrl}`);
+  res.status(404).json({
+    success: false,
+    message: 'Ruta no encontrada',
+    requestId: req.id
+  });
+});
+
 // Iniciar servidor
 app.listen(PORT, () => {
+  logger.info(`Servidor iniciado en el puerto ${PORT} en modo ${NODE_ENV}`);
   console.log(`Servidor corriendo en puerto ${PORT}`.green.bold);
+});
+
+// Manejo de excepciones no capturadas
+process.on('uncaughtException', (err) => {
+  logger.error('Excepción no capturada:', err);
+  process.exit(1);
+});
+
+// Manejo de promesas rechazadas no capturadas
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Promesa rechazada no capturada:', { reason, promise });
+  process.exit(1);
 });
