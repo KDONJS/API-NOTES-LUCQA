@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const helmet = require('helmet');
 const connectDB = require('./config/db');
 const noteRoutes = require('./routes/noteRoutes');
 const figlet = require('figlet');
@@ -48,6 +49,9 @@ console.log(table.toString());
 connectDB();
 
 const app = express();
+
+// Middleware de seguridad
+app.use(helmet());
 
 // Middleware
 app.use(cors());
