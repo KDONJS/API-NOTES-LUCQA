@@ -60,8 +60,26 @@ const createNote = async (req, res) => {
       return res.status(400).json({ message: 'El autor de la nota es obligatorio' });
     }
 
-    // Crear la nota con los datos validados
-    const note = await Note.create(validatedData);
+    // Crear la nota con los datos validados de manera más segura
+    const newNote = new Note({
+      nota: validatedData.nota,
+      categoria: validatedData.categoria,
+      etiquetas: validatedData.etiquetas,
+      color: validatedData.color,
+      autor: validatedData.autor,
+      recordatorio: {
+        fecha: validatedData.recordatorio.fecha,
+        hora: validatedData.recordatorio.hora,
+        activo: validatedData.recordatorio.activo
+      },
+      estado: validatedData.estado,
+      prioridad: validatedData.prioridad,
+      fechaVencimiento: validatedData.fechaVencimiento,
+      adjuntos: validatedData.adjuntos,
+      colaboradores: validatedData.colaboradores
+    });
+    
+    const note = await newNote.save();
     res.status(201).json(note);
   } catch (error) {
     res.status(400).json({ message: error.message });
