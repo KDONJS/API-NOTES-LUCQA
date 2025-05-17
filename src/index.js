@@ -10,6 +10,7 @@ const colors = require('colors');
 const logger = require('./utils/logger');
 const httpLogger = require('./middlewares/logs/httpLogger');
 const errorLogger = require('./middlewares/logs/errorLogger');
+const swaggerConfig = require('./config/swagger');
 
 // Cargar variables de entorno
 dotenv.config();
@@ -45,7 +46,8 @@ table.push(
   ['Tecnología'.cyan, TECH],
   ['Base de Datos'.cyan, DB],
   ['Puerto'.cyan, PORT.toString()],
-  ['Entorno'.cyan, NODE_ENV]
+  ['Entorno'.cyan, NODE_ENV],
+  ['Documentación'.cyan, `http://localhost:${PORT}/api-docs`]
 );
 
 console.log(table.toString());
@@ -58,6 +60,16 @@ const app = express();
 // Middleware de seguridad
 app.use(helmet());
 
+// Permitir que Swagger funcione con Helmet
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:"]
+  }
+}));
+
 // Middleware de logs HTTP
 app.use(httpLogger);
 
@@ -66,12 +78,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Rutas
+// Rutas de la API
 app.use('/api/notes', noteRoutes);
+
+// Ruta de documentación Swagger
+app.use('/api-docs', swaggerConfig.serve, swaggerConfig.setup);
 
 // Ruta de inicio
 app.get('/', (req, res) => {
-  res.send('API de Notas está funcionando');
+  res.send(`
+    <h1>API de Notas</h1>
+    <p>La API está funcionando correctamente.</p>
+    <p><a href="/api-docs">Ver documentación de la API</a></p>
+  `);
 });
 
 // Middleware para manejo de errores
@@ -90,6 +109,7 @@ app.use((req, res) => {
 // Iniciar servidor
 app.listen(PORT, () => {
   logger.info(`Servidor iniciado en el puerto ${PORT} en modo ${NODE_ENV}`);
+  logger.info(`Documentación disponible en http://localhost:${PORT}/api-docs`);
   console.log(`Servidor corriendo en puerto ${PORT}`.green.bold);
 });
 
