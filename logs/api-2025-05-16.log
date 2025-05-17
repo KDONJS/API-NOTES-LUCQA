@@ -44,3 +44,27 @@
 {"level":"http","message":{"method":"GET","requestId":"a34d2ec1-1e61-4004-b368-17d1a3cd9648","responseTime":"1.13ms","status":200,"url":"/api-docs/swagger-ui-init.js"},"service":"api-notes","timestamp":"2025-05-17T03:49:02.310Z"}
 {"level":"http","message":"09f0053b-830e-4173-915f-2d2e2d7543c6 GET /api-docs/swagger-ui-standalone-preset.js 304 - 4.051 ms","service":"api-notes","timestamp":"2025-05-17T03:49:02.311Z"}
 {"level":"http","message":{"method":"GET","requestId":"09f0053b-830e-4173-915f-2d2e2d7543c6","responseTime":"4.48ms","status":304,"url":"/api-docs/swagger-ui-standalone-preset.js"},"service":"api-notes","timestamp":"2025-05-17T03:49:02.311Z"}
+{"level":"info","message":"Servidor iniciado en el puerto 3000 en modo development","service":"api-notes","timestamp":"2025-05-17T03:52:11.151Z"}
+{"level":"info","message":"Documentación disponible en http://localhost:3000/api-docs","service":"api-notes","timestamp":"2025-05-17T03:52:11.152Z"}
+{"level":"http","message":"e631d3f1-f58d-48f4-b2c6-11c890b97b4e GET /api-docs/ 304 - 1.940 ms","service":"api-notes","timestamp":"2025-05-17T03:52:16.579Z"}
+{"level":"http","message":{"method":"GET","requestId":"e631d3f1-f58d-48f4-b2c6-11c890b97b4e","responseTime":"3.52ms","status":304,"url":"/api-docs/"},"service":"api-notes","timestamp":"2025-05-17T03:52:16.579Z"}
+{"level":"http","message":"f85afbd3-bec5-4581-ac11-65147f5cd8e4 GET /api-docs/swagger-ui-init.js 304 - 0.152 ms","service":"api-notes","timestamp":"2025-05-17T03:52:16.587Z"}
+{"level":"http","message":{"method":"GET","requestId":"f85afbd3-bec5-4581-ac11-65147f5cd8e4","responseTime":"0.73ms","status":304,"url":"/api-docs/swagger-ui-init.js"},"service":"api-notes","timestamp":"2025-05-17T03:52:16.587Z"}
+{"level":"http","message":"3a4ed317-2c80-4f98-886a-05dd0100b190 GET /api-docs/swagger-ui.css 304 - 2.432 ms","service":"api-notes","timestamp":"2025-05-17T03:52:16.588Z"}
+{"level":"http","message":{"method":"GET","requestId":"3a4ed317-2c80-4f98-886a-05dd0100b190","responseTime":"2.75ms","status":304,"url":"/api-docs/swagger-ui.css"},"service":"api-notes","timestamp":"2025-05-17T03:52:16.588Z"}
+{"level":"http","message":"8c86895d-753b-4c86-b3b1-20c3e9943452 GET /api-docs/swagger-ui-bundle.js 304 - 2.875 ms","service":"api-notes","timestamp":"2025-05-17T03:52:16.589Z"}
+{"level":"http","message":{"method":"GET","requestId":"8c86895d-753b-4c86-b3b1-20c3e9943452","responseTime":"3.37ms","status":304,"url":"/api-docs/swagger-ui-bundle.js"},"service":"api-notes","timestamp":"2025-05-17T03:52:16.589Z"}
+{"level":"http","message":"9030e452-93c9-43bd-ba8c-90218503cad6 GET /api-docs/swagger-ui-standalone-preset.js 304 - 2.294 ms","service":"api-notes","timestamp":"2025-05-17T03:52:16.590Z"}
+{"level":"http","message":{"method":"GET","requestId":"9030e452-93c9-43bd-ba8c-90218503cad6","responseTime":"2.61ms","status":304,"url":"/api-docs/swagger-ui-standalone-preset.js"},"service":"api-notes","timestamp":"2025-05-17T03:52:16.590Z"}
+{"level":"info","message":"Servidor iniciado en el puerto 3000 en modo development","service":"api-notes","timestamp":"2025-05-17T03:55:15.727Z"}
+{"level":"info","message":"Documentación disponible en http://localhost:3000/api-docs","service":"api-notes","timestamp":"2025-05-17T03:55:15.728Z"}
+{"level":"http","message":"fa4d1d88-918c-407f-ba9d-5d1ae3376c3a GET /api-docs/ 304 - 2.122 ms","service":"api-notes","timestamp":"2025-05-17T03:55:19.987Z"}
+{"level":"http","message":{"method":"GET","requestId":"fa4d1d88-918c-407f-ba9d-5d1ae3376c3a","responseTime":"3.54ms","status":304,"url":"/api-docs/"},"service":"api-notes","timestamp":"2025-05-17T03:55:19.988Z"}
+{"level":"http","message":"e78a7337-e845-4fa4-82e8-9011893522c5 GET /api-docs/swagger-ui.css 304 - 0.736 ms","service":"api-notes","timestamp":"2025-05-17T03:55:19.995Z"}
+{"level":"http","message":{"method":"GET","requestId":"e78a7337-e845-4fa4-82e8-9011893522c5","responseTime":"1.28ms","status":304,"url":"/api-docs/swagger-ui.css"},"service":"api-notes","timestamp":"2025-05-17T03:55:19.995Z"}
+{"level":"http","message":"e5ccaef9-e171-4c3f-b763-e03fc6762b6d GET /api-docs/swagger-ui-init.js 200 - 0.243 ms","service":"api-notes","timestamp":"2025-05-17T03:55:19.997Z"}
+{"level":"http","message":{"method":"GET","requestId":"e5ccaef9-e171-4c3f-b763-e03fc6762b6d","responseTime":"0.91ms","status":200,"url":"/api-docs/swagger-ui-init.js"},"service":"api-notes","timestamp":"2025-05-17T03:55:19.998Z"}
+{"level":"http","message":"88613fce-6277-431f-865f-cbd8efaf213a GET /api-docs/swagger-ui-bundle.js 304 - 1.906 ms","service":"api-notes","timestamp":"2025-05-17T03:55:19.998Z"}
+{"level":"http","message":{"method":"GET","requestId":"88613fce-6277-431f-865f-cbd8efaf213a","responseTime":"2.42ms","status":304,"url":"/api-docs/swagger-ui-bundle.js"},"service":"api-notes","timestamp":"2025-05-17T03:55:19.999Z"}
+{"level":"http","message":"a4463b75-29b1-46f3-8eea-011a325d06a0 GET /api-docs/swagger-ui-standalone-preset.js 304 - 2.543 ms","service":"api-notes","timestamp":"2025-05-17T03:55:19.999Z"}
+{"level":"http","message":{"method":"GET","requestId":"a4463b75-29b1-46f3-8eea-011a325d06a0","responseTime":"2.85ms","status":304,"url":"/api-docs/swagger-ui-standalone-preset.js"},"service":"api-notes","timestamp":"2025-05-17T03:55:19.999Z"}

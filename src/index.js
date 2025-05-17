@@ -60,13 +60,17 @@ const app = express();
 // Middleware de seguridad
 app.use(helmet());
 
-// Permitir que Swagger funcione con Helmet
+// Permitir que Swagger funcione con Helmet de manera más segura
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
     styleSrc: ["'self'", "'unsafe-inline'"],
-    imgSrc: ["'self'", "data:"]
+    imgSrc: ["'self'", "data:"],
+    // Prevenir contenido mixto
+    upgradeInsecureRequests: [],
+    // Restringir conexiones solo a HTTPS
+    blockAllMixedContent: []
   }
 }));
 
