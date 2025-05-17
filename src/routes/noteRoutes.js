@@ -7,9 +7,10 @@ const {
   updateNote,
   deleteNote,
 } = require('../controllers/noteController');
+const validate = require('../middlewares/validate');
+const { noteSchema } = require('../validators/noteValidator');
 
-// Rutas para las notas
-router.route('/').get(getNotes).post(createNote);
-router.route('/:id').get(getNoteById).put(updateNote).delete(deleteNote);
+router.route('/').get(getNotes).post(validate(noteSchema), createNote);
+router.route('/:id').get(getNoteById).put(validate(noteSchema), updateNote).delete(deleteNote);
 
 module.exports = router;
