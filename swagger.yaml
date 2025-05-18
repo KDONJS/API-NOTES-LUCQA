@@ -17,6 +17,8 @@ servers:
 tags:
   - name: Notas
     description: API para gestionar notas
+  - name: Usuarios
+    description: API para gestionar usuarios y autenticación
 
 components:
   schemas:
@@ -90,6 +92,44 @@ components:
           type: string
           format: date-time
           description: Fecha de última actualización de la nota
+    Usuario:
+      type: object
+      required:
+        - nombre
+        - email
+        - password
+      properties:
+        _id:
+          type: string
+          description: UUID único del usuario
+        nombre:
+          type: string
+          description: Nombre del usuario
+        email:
+          type: string
+          description: Email del usuario (único)
+        password:
+          type: string
+          description: Contraseña del usuario (mínimo 6 caracteres)
+        rol:
+          type: string
+          enum: [usuario, admin]
+          description: Rol del usuario
+        activo:
+          type: boolean
+          description: Estado del usuario
+        ultimoAcceso:
+          type: string
+          format: date-time
+          description: Fecha del último acceso
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación
+        updatedAt:
+          type: string
+          format: date-time
+          description: Fecha de última actualización
     Error:
       type: object
       properties:
@@ -99,6 +139,11 @@ components:
         requestId:
           type: string
           description: ID de la petición para seguimiento
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
 paths:
   /api/notes:
@@ -106,6 +151,8 @@ paths:
       summary: Obtener todas las notas
       description: Retorna una lista de todas las notas disponibles
       tags: [Notas]
+      security:
+        - bearerAuth: []
       responses:
         200:
           description: Lista de notas obtenida correctamente
@@ -115,6 +162,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Nota'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Error del servidor
           content:
@@ -125,6 +178,8 @@ paths:
       summary: Crear una nueva nota
       description: Crea una nueva nota con los datos proporcionados
       tags: [Notas]
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -144,12 +199,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /api/notes/{id}:
     get:
       summary: Obtener una nota por ID
       description: Retorna una nota específica según su ID
       tags: [Notas]
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -164,6 +227,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Nota'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
           description: Nota no encontrada
           content:
@@ -180,6 +249,8 @@ paths:
       summary: Actualizar una nota
       description: Actualiza una nota existente según su ID
       tags: [Notas]
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -200,6 +271,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Nota'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
           description: Nota no encontrada
           content:
@@ -216,6 +293,8 @@ paths:
       summary: Eliminar una nota
       description: Elimina una nota existente según su ID
       tags: [Notas]
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -234,6 +313,12 @@ paths:
                   message:
                     type: string
                     example: Nota eliminada correctamente
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
           description: Nota no encontrada
           content:
@@ -246,3 +331,281 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /api/users:
+    post:
+      summary: Registrar un nuevo usuario
+      description: Crea un nuevo usuario en el sistema
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre
+                - email
+                - password
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                rol:
+                  type: string
+                  enum: [usuario, admin]
+      responses:
+        201:
+          description: Usuario registrado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  nombre:
+                    type: string
+                  email:
+                    type: string
+                  rol:
+                    type: string
+                  token:
+                    type: string
+        400:
+          description: Datos inválidos o usuario ya existe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Obtener todos los usuarios
+      description: Retorna una lista de todos los usuarios (solo admin)
+      tags: [Usuarios]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Lista de usuarios obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: No autorizado como administrador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/users/login:
+    post:
+      summary: Iniciar sesión
+      description: Autentica un usuario y devuelve un token JWT
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Usuario autenticado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  nombre:
+                    type: string
+                  email:
+                    type: string
+                  rol:
+                    type: string
+                  token:
+                    type: string
+        401:
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/users/perfil:
+    get:
+      summary: Obtener perfil de usuario
+      description: Retorna el perfil del usuario autenticado
+      tags: [Usuarios]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Perfil obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Actualizar perfil de usuario
+      description: Actualiza el perfil del usuario autenticado
+      tags: [Usuarios]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Perfil actualizado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  nombre:
+                    type: string
+                  email:
+                    type: string
+                  rol:
+                    type: string
+                  token:
+                    type: string
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/users/{id}:
+    delete:
+      summary: Eliminar usuario
+      description: Elimina un usuario por su ID (solo admin)
+      tags: [Usuarios]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del usuario
+      responses:
+        200:
+          description: Usuario eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Usuario eliminado
+        401:
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: No autorizado como administrador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+

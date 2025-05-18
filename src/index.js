@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const connectDB = require('./config/db');
 const noteRoutes = require('./routes/noteRoutes');
+const userRoutes = require('./routes/userRoutes');
 const figlet = require('figlet');
 const Table = require('cli-table3');
 const colors = require('colors');
@@ -86,6 +87,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rutas de la API
 app.use('/api/notes', noteRoutes);
+app.use('/api/users', userRoutes);
 
 // Ruta de documentación Swagger
 app.use('/api-docs', swaggerConfig.serve, swaggerConfig.setup);
