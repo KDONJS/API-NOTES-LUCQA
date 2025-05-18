@@ -70,7 +70,9 @@ app.use(helmet.contentSecurityPolicy({
     // Prevenir contenido mixto
     upgradeInsecureRequests: [],
     // Restringir conexiones solo a HTTPS
-    blockAllMixedContent: []
+    blockAllMixedContent: [],
+    // Protección contra clickjacking
+    frameAncestors: ["'self'"]
   }
 }));
 
